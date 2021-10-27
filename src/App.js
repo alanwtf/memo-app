@@ -2,14 +2,17 @@ import logo from "./logo.svg";
 import { useState, useEffect } from "react";
 
 import Cards from "./components/Cards";
-
+import Card from "./components/Card";
 import API from "./API";
 import "./App.css";
+import { logRoles } from "@testing-library/dom";
 
 function App() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentImgs, setCurrentImgs] = useState([]);
+  const [clickedCards, setClickedCards] = useState([]);
+
   const fetchImages = async (page, searchTerm = "") => {
     try {
       const imges = await API.fetchImages(searchTerm, page);
@@ -32,16 +35,45 @@ function App() {
     fetchImages(1);
   }, []);
 
+  const checkClickedCards = (id) => {
+    console.log("Hola");
+
+    if (clickedCards.includes(id)) {
+      lose();
+    } else {
+      nextRound();
+      setClickedCards(clickedCards.concat(id));
+      const arr = currentImgs;
+      setCurrentImgs(arr.sort((a, b) => 0, 5 - Math.random()));
+    }
+  };
+
+  const nextRound = (id) => {
+    setClickedCards(clickedCards.concat(id));
+
+    shuffleCards();
+  };
+
+  const shuffleCards = () => {
+    console.log("shuffleCards");
+  };
+
+  const lose = () => {
+    alert("YPILOUSE");
+  };
+
   return (
     <div className="App">
       <Cards>
         {loading
           ? "loading"
           : currentImgs.map((img) => (
-              <div key={img.id}>
-                {" "}
-                <img src={img.webformatURL} />
-              </div>
+              <Card
+                key={img.id}
+                img={img.webformatURL}
+                onClick={checkClickedCards}
+                id={img.id}
+              />
             ))}
       </Cards>
       <button onClick={addImages}>ADD MORE</button>
