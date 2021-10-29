@@ -41,10 +41,10 @@ function App() {
     if (clickedCards.includes(id)) {
       lose();
     } else {
-      nextRound();
       setClickedCards(clickedCards.concat(id));
       const arr = currentImgs;
-      setCurrentImgs(arr.sort((a, b) => 0, 5 - Math.random()));
+      arr.sort((a, b) => 0, 5 - Math.random())
+      setCurrentImgs(arr);
     }
   };
 
